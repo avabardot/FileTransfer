@@ -15,6 +15,12 @@ export_presets.cfg
 data_*/
 mono_crash.*.json
 
+# IDE / Editor
+.vs/
+.vscode/
+*.suo
+*.user
+
 # OS-specific
 .DS_Store
 Thumbs.db
