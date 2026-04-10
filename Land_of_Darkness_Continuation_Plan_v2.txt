@@ -1,0 +1,33 @@
+Land of Darkness continuation note — v2
+
+What is complete now:
+- Original Spatial Bible DOCX with world graph, adjacency register, room catalog, landmarks, and graybox metrics.
+- Biome and Systems Supplement DOCX locking steps 2–5:
+  - final spatial compression policy
+  - naming convention lock
+  - biome framework
+  - engine-neutral streaming/world-partition proposal
+- Enriched room registry CSV with biome and zone assignments.
+- Biome matrix CSV.
+- Streaming zones CSV.
+
+Locked decisions:
+- Dual-label naming system: stable IDs for production, source-faithful labels for audit/reference.
+- Nine biome families across the world shell.
+- Twelve streaming zones, with Z03 (Central Hub and House Base) treated as the persistent anchor.
+- Crossroads and house silhouette are intentionally expanded; lower mines are intentionally compressed.
+
+Best next steps after this packet:
+1) Create top-down graybox sketches per streaming zone.
+2) Build a biome reference board for materials, vegetation, fog, and prop silhouette.
+3) Validate compression by timed traversal and line-of-sight tests in engine.
+4) Decide whether the intro (bedroom + closet) remains in the main world or ships as a separate bootstrap map.
+5) If engine is finalized, convert the zone plan into engine-specific partition/data-layer setup.
+
+Open items still worth revisiting:
+- Mudpits exact placement.
+- Final geometry of the lower gold-mine loop after camera tests.
+- Whether the house interior should remain one biome family with submoods or split into lower/upper art-production biomes.
+
+Suggested resume point:
+Start with Z03, Z04, Z08, and Z10 graybox sketches, then build a quick material-and-lighting board for B03, B04, B06, and B09.
