@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2"]
 [ext_resource type="Shader" path="res://shaders/sky_night.gdshader" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/assembly/central_hub.tscn" id="4"]
 
 [sub_resource type="ShaderMaterial" id="SkyShaderMat"]
 shader = ExtResource("3")
@@ -60,5 +61,9 @@ light_energy = 0.35
 shadow_enabled = true
 directional_shadow_mode = 1
 
+; World geometry — spawn the Central Hub assembly (R07 crossroads + R08 lift base).
+; This is the persistent Z03 anchor per the streaming zones design.
+[node name="World" parent="." instance=ExtResource("4")]
+
 [node name="Player" parent="." instance=ExtResource("2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 2.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 2.0)
