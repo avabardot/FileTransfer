@@ -1,0 +1,278 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/interior_wood.tres" id="1"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/rug_carpet.tres" id="2"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/furniture_wood.tres" id="3"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/brass_hardware.tres" id="4"]
+[ext_resource type="ShaderMaterial" path="res://materials/emissive/emissive_cool.tres" id="5"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/curtain.tres" id="6"]
+
+; R41 Weird Hallway — 3m wide x 8m long, ceiling varies 2.5–4m
+; Walls are slightly angled (2–5 deg off-perpendicular) to create uncanny geometry.
+; Doorways: south (from stair landing), east (to music room), west (to library), north (continues).
+
+[node name="R41WeirdHallway" type="Node3D"]
+
+; ── STRUCTURE ─────────────────────────────────────────────────────────────────
+
+[node name="Structure" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+; Floor — flat base
+[node name="Floor" type="CSGBox3D" parent="Structure"]
+size = Vector3(3.0, 0.3, 8.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+material = ExtResource("1")
+
+; Uneven floor bump near mid-section (slightly raised platform)
+[node name="FloorBumpMid" type="CSGBox3D" parent="Structure"]
+size = Vector3(2.6, 0.07, 1.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.035, -1.5)
+material = ExtResource("1")
+
+; Uneven floor step near north end
+[node name="FloorBumpNorth" type="CSGBox3D" parent="Structure"]
+size = Vector3(2.8, 0.05, 1.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.025, -3.2)
+material = ExtResource("1")
+
+; Ceiling south half — lower (2.5m)
+[node name="CeilingSouth" type="CSGBox3D" parent="Structure"]
+size = Vector3(3.1, 0.2, 4.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 1.85)
+material = ExtResource("1")
+
+; Ceiling north half — higher (4m), slightly rotated for the sloping effect
+[node name="CeilingNorth" type="CSGBox3D" parent="Structure"]
+size = Vector3(3.1, 0.2, 3.8)
+transform = Transform3D(0.9986, 0, -0.0523, 0, 1, 0, 0.0523, 0, 0.9986, 0, 3.9, -2.1)
+material = ExtResource("1")
+
+; Ceiling ramp wedge that fills the height-transition gap
+[node name="CeilingRampFill" type="CSGBox3D" parent="Structure"]
+size = Vector3(3.1, 1.5, 0.4)
+transform = Transform3D(1, 0, 0, 0, 0.9659, -0.2588, 0, 0.2588, 0.9659, 0, 3.1, 0.0)
+material = ExtResource("1")
+
+; West wall — 3 degrees inward tilt (top leans east slightly)
+[node name="WallWest" type="CSGBox3D" parent="Structure"]
+size = Vector3(0.22, 4.2, 8.2)
+transform = Transform3D(0.9986, 0, 0.0523, 0, 1, 0, -0.0523, 0, 0.9986, -1.56, 2.0, 0)
+material = ExtResource("1")
+
+; West doorway cutout (to library)
+[node name="DoorWest" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(0.5, 2.25, 1.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1.125, -1.0)
+
+; East wall — 2 degrees inward tilt (top leans west slightly)
+[node name="WallEast" type="CSGBox3D" parent="Structure"]
+size = Vector3(0.22, 4.2, 8.2)
+transform = Transform3D(0.9994, 0, -0.0349, 0, 1, 0, 0.0349, 0, 0.9994, 1.56, 2.0, 0)
+material = ExtResource("1")
+
+; East doorway cutout (to music room)
+[node name="DoorEast" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(0.5, 2.25, 1.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.125, 1.5)
+
+; South wall (from stair landing) — 1 degree off-vertical
+[node name="WallSouth" type="CSGBox3D" parent="Structure"]
+size = Vector3(3.1, 3.0, 0.22)
+transform = Transform3D(1, 0, 0, 0, 0.9998, 0.0175, 0, -0.0175, 0.9998, 0, 1.5, 4.0)
+material = ExtResource("1")
+
+; South doorway cutout (stair landing)
+[node name="DoorSouth" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(1.25, 2.25, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.125, 4.0)
+
+; North wall — 2 degrees off-vertical, taller for the high-ceiling end
+[node name="WallNorth" type="CSGBox3D" parent="Structure"]
+size = Vector3(3.1, 4.2, 0.22)
+transform = Transform3D(1, 0, 0, 0, 0.9994, -0.0349, 0, 0.0349, 0.9994, 0, 2.0, -4.0)
+material = ExtResource("1")
+
+; North doorway cutout (continues north)
+[node name="DoorNorth" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(1.25, 2.35, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.175, -4.0)
+
+; ── PROPS ─────────────────────────────────────────────────────────────────────
+
+[node name="Props" type="Node3D" parent="."]
+
+; — Door frame on west wall (prominent "room 3G" frame with oversized doorknob) —
+[node name="DoorFrame3G" type="CSGCombiner3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.42, 0, -1.0)
+use_collision = true
+
+[node name="Frame3G_Left" type="CSGBox3D" parent="Props/DoorFrame3G"]
+size = Vector3(0.1, 2.4, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -0.62)
+material = ExtResource("3")
+
+[node name="Frame3G_Right" type="CSGBox3D" parent="Props/DoorFrame3G"]
+size = Vector3(0.1, 2.4, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0.62)
+material = ExtResource("3")
+
+[node name="Frame3G_Top" type="CSGBox3D" parent="Props/DoorFrame3G"]
+size = Vector3(0.1, 0.1, 1.44)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45, 0)
+material = ExtResource("3")
+
+; Prominent doorknob — slightly too large, slightly off-axis (surreal detail)
+[node name="Knob3G_Ball" type="CSGSphere3D" parent="Props/DoorFrame3G"]
+radius = 0.08
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09, 1.1, 0.32)
+material = ExtResource("4")
+
+[node name="Knob3G_Shaft" type="CSGCylinder3D" parent="Props/DoorFrame3G"]
+radius = 0.018
+height = 0.18
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.04, 1.1, 0.32)
+material = ExtResource("4")
+
+[node name="Knob3G_Rose" type="CSGCylinder3D" parent="Props/DoorFrame3G"]
+radius = 0.05
+height = 0.035
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.09, 1.1, 0.32)
+material = ExtResource("4")
+
+; — East door frame (to music room) —
+[node name="DoorFrameEast" type="CSGCombiner3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.42, 0, 1.5)
+use_collision = true
+
+[node name="FrameE_Left" type="CSGBox3D" parent="Props/DoorFrameEast"]
+size = Vector3(0.1, 2.35, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.175, -0.62)
+material = ExtResource("3")
+
+[node name="FrameE_Right" type="CSGBox3D" parent="Props/DoorFrameEast"]
+size = Vector3(0.1, 2.35, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.175, 0.62)
+material = ExtResource("3")
+
+[node name="FrameE_Top" type="CSGBox3D" parent="Props/DoorFrameEast"]
+size = Vector3(0.1, 0.1, 1.44)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+material = ExtResource("3")
+
+[node name="Knob_E" type="CSGSphere3D" parent="Props/DoorFrameEast"]
+radius = 0.055
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08, 1.1, -0.3)
+material = ExtResource("4")
+
+; — Tilted picture frames on east wall —
+; Frame A: tilted ~7 degrees clockwise when viewed face-on
+[node name="PicFrameA" type="CSGCombiner3D" parent="Props"]
+transform = Transform3D(0.9927, 0, -0.1219, 0, 0.9925, -0.1219, 0.121, 0.1219, 0.985, 1.44, 1.85, 0.4)
+
+[node name="PicA_Border" type="CSGBox3D" parent="Props/PicFrameA"]
+size = Vector3(0.06, 0.55, 0.75)
+material = ExtResource("3")
+
+[node name="PicA_Inner" type="CSGBox3D" parent="Props/PicFrameA"]
+operation = 2
+size = Vector3(0.08, 0.43, 0.63)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+; Frame B: tilted ~-5 degrees
+[node name="PicFrameB" type="CSGCombiner3D" parent="Props"]
+transform = Transform3D(0.9962, 0, -0.0872, 0, 0.9981, 0.0610, 0.087, -0.0608, 0.9943, 1.44, 2.1, 2.5)
+
+[node name="PicB_Border" type="CSGBox3D" parent="Props/PicFrameB"]
+size = Vector3(0.06, 0.7, 0.5)
+material = ExtResource("3")
+
+[node name="PicB_Inner" type="CSGBox3D" parent="Props/PicFrameB"]
+operation = 2
+size = Vector3(0.08, 0.58, 0.38)
+
+; Frame C: tilted ~9 degrees on west wall, near south end
+[node name="PicFrameC" type="CSGCombiner3D" parent="Props"]
+transform = Transform3D(0.9877, 0, 0.1564, 0, 0.9903, -0.1392, -0.1548, 0.1392, 0.9782, -1.44, 1.5, 3.0)
+
+[node name="PicC_Border" type="CSGBox3D" parent="Props/PicFrameC"]
+size = Vector3(0.06, 0.45, 0.62)
+material = ExtResource("3")
+
+[node name="PicC_Inner" type="CSGBox3D" parent="Props/PicFrameC"]
+operation = 2
+size = Vector3(0.08, 0.33, 0.50)
+
+; — Runner rug along hall centre —
+[node name="RunnerRug" type="CSGBox3D" parent="Props"]
+size = Vector3(1.2, 0.02, 6.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, 0.01, -0.25)
+material = ExtResource("2")
+
+; — Small wall-shelf curiosities —
+[node name="ShelfWest" type="CSGBox3D" parent="Props"]
+size = Vector3(0.35, 0.05, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3, 1.7, -3.5)
+material = ExtResource("3")
+
+[node name="CuriosityOrb" type="CSGSphere3D" parent="Props"]
+radius = 0.1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.28, 1.82, -3.5)
+material = ExtResource("4")
+
+[node name="ShelfEast" type="CSGBox3D" parent="Props"]
+size = Vector3(0.35, 0.05, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3, 2.4, -2.8)
+material = ExtResource("3")
+
+; Curtain drape hanging near north doorway (surreal excess of fabric)
+[node name="CurtainNorth" type="CSGBox3D" parent="Props"]
+size = Vector3(1.0, 2.4, 0.08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1.2, -3.86)
+material = ExtResource("6")
+
+; ── LIGHTING ──────────────────────────────────────────────────────────────────
+
+[node name="Lighting" type="Node3D" parent="."]
+
+; Off-angle spot — south zone, angled 15deg sideways for disorienting shadow
+[node name="SpotSouth" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(0.9659, 0.2588, 0, -0.2165, 0.8085, 0.5446, 0.141, -0.5263, 0.8387, -0.5, 2.5, 2.0)
+light_color = Color(0.7, 0.5, 0.8, 1)
+light_energy = 0.6
+spot_range = 6.0
+spot_angle = 32.0
+
+; Off-angle spot — mid zone, angled opposite direction
+[node name="SpotMid" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(0.9848, -0.1736, 0, 0.1564, 0.8873, 0.4338, -0.0752, -0.4263, 0.9010, 0.55, 3.8, -1.0)
+light_color = Color(0.65, 0.48, 0.82, 1)
+light_energy = 0.6
+spot_range = 7.0
+spot_angle = 36.0
+
+; Off-angle spot — north high zone
+[node name="SpotNorth" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(0.9962, 0, -0.0872, 0.0239, 0.9638, 0.2652, 0.084, -0.2664, 0.9601, 0.3, 3.85, -3.0)
+light_color = Color(0.62, 0.44, 0.78, 1)
+light_energy = 0.55
+spot_range = 6.5
+spot_angle = 38.0
+
+; Dim fill — makes space feel hollow without full blackness
+[node name="AmbientFill" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+light_color = Color(0.45, 0.35, 0.55, 1)
+light_energy = 0.18
+omni_range = 9.0
+
+; Faint ethereal glow near the 3G doorknob — the most "wrong" spot
+[node name="KnobGlow" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.33, 1.12, -1.0)
+light_color = Color(0.6, 0.4, 0.9, 1)
+light_energy = 0.35
+omni_range = 1.2

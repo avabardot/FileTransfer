@@ -1,0 +1,209 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b08/bark_surface.tres" id="1"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b08/plank_platform.tres" id="2"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b08/rope.tres" id="3"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b08/exterior_lamp.tres" id="4"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/brass_hardware.tres" id="5"]
+[ext_resource type="ShaderMaterial" path="res://materials/emissive/emissive_warm.tres" id="6"]
+[ext_resource type="ShaderMaterial" path="res://materials/emissive/emissive_window_spill.tres" id="7"]
+
+; R36 House Exterior Lift Top — 6m x 6m canopy platform (B08)
+; "Perched threshold between the open landscape and the giant tree-house interior."
+; "A strong overlook back to the world helps sell global coherence."
+; "The platform is a reveal vantage, not a destination plaza; keep the house façade dominant."
+; This is the arrival platform at the top of the pulley lift, outside the house front door.
+
+[node name="R36HouseExteriorLiftTop" type="Node3D"]
+
+; ── Platform structure ────────────────────────────────────────────────────
+; Main platform deck — plank wood on bark surface
+[node name="PlatformDeck" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="DeckBase" type="CSGBox3D" parent="PlatformDeck"]
+size = Vector3(6.0, 0.3, 6.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+material = ExtResource("2")
+
+; Plank seams (decorative strips across deck)
+[node name="PlankSeam1" type="CSGBox3D" parent="PlatformDeck"]
+size = Vector3(6.1, 0.02, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, -1.5)
+material = ExtResource("1")
+
+[node name="PlankSeam2" type="CSGBox3D" parent="PlatformDeck"]
+size = Vector3(6.1, 0.02, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+material = ExtResource("1")
+
+[node name="PlankSeam3" type="CSGBox3D" parent="PlatformDeck"]
+size = Vector3(6.1, 0.02, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 1.5)
+material = ExtResource("1")
+
+; ── Giant tree trunk section — house is embedded in tree ──────────────────
+; Massive cylinder behind the house (north side of platform)
+[node name="TreeTrunk" type="CSGCylinder3D" parent="."]
+radius = 3.5
+height = 25.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.5, -5.0)
+material = ExtResource("1")
+
+; Visible roots emerging from trunk at platform level
+[node name="Root1" type="CSGBox3D" parent="."]
+size = Vector3(0.5, 0.3, 2.5)
+transform = Transform3D(0.9659, 0, 0.2588, 0, 1, 0, -0.2588, 0, 0.9659, 1.8, -0.08, -0.5)
+material = ExtResource("1")
+
+[node name="Root2" type="CSGBox3D" parent="."]
+size = Vector3(0.4, 0.25, 2.0)
+transform = Transform3D(0.9848, 0, -0.1736, 0, 1, 0, 0.1736, 0, 0.9848, -2.0, -0.08, -0.3)
+material = ExtResource("1")
+
+; ── Platform railing (safety rail around the overlook edge) ───────────────
+[node name="Railing" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+; South rail (overlook side — where you see the world below)
+[node name="RailSouth" type="CSGBox3D" parent="Railing"]
+size = Vector3(5.8, 0.08, 0.08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 2.96)
+material = ExtResource("3")
+
+[node name="RailSouthLow" type="CSGBox3D" parent="Railing"]
+size = Vector3(5.8, 0.08, 0.08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 2.96)
+material = ExtResource("3")
+
+; Rail posts south
+[node name="PostS1" type="CSGBox3D" parent="Railing"]
+size = Vector3(0.08, 1.15, 0.08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.575, 2.96)
+material = ExtResource("2")
+
+[node name="PostS2" type="CSGBox3D" parent="Railing"]
+size = Vector3(0.08, 1.15, 0.08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 2.96)
+material = ExtResource("2")
+
+[node name="PostS3" type="CSGBox3D" parent="Railing"]
+size = Vector3(0.08, 1.15, 0.08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.575, 2.96)
+material = ExtResource("2")
+
+; East and west rails
+[node name="RailEast" type="CSGBox3D" parent="Railing"]
+size = Vector3(0.08, 0.08, 5.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.96, 1.1, 0)
+material = ExtResource("3")
+
+[node name="RailWest" type="CSGBox3D" parent="Railing"]
+size = Vector3(0.08, 0.08, 5.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.96, 1.1, 0)
+material = ExtResource("3")
+
+; ── Pulley lift mechanism (south-east corner — lift arrives here) ──────────
+[node name="LiftMechanism" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+; Overhead pulley arm extending out over the edge
+[node name="PulleyArm" type="CSGBox3D" parent="LiftMechanism"]
+size = Vector3(0.12, 0.12, 2.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 2.5, 2.0)
+material = ExtResource("2")
+
+[node name="PulleyWheel" type="CSGCylinder3D" parent="LiftMechanism"]
+radius = 0.18
+height = 0.12
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2.2, 2.5, 3.05)
+material = ExtResource("5")
+
+; Main rope descending from pulley
+[node name="RopeDown" type="CSGCylinder3D" parent="LiftMechanism"]
+radius = 0.028
+height = 5.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.0, 3.05)
+material = ExtResource("3")
+
+; Rope tension post mounted to platform
+[node name="RopePost" type="CSGBox3D" parent="LiftMechanism"]
+size = Vector3(0.1, 2.6, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 1.3, 2.46)
+material = ExtResource("2")
+
+; Counter-weight rope cleat on post
+[node name="Cleat" type="CSGBox3D" parent="LiftMechanism"]
+size = Vector3(0.24, 0.06, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 1.9, 2.44)
+material = ExtResource("5")
+
+; ── House front door (north wall — embedded in tree) ──────────────────────
+; Door frame set into the bark surface of the tree
+[node name="HouseFrontDoor" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="DoorFrameL" type="CSGBox3D" parent="HouseFrontDoor"]
+size = Vector3(0.2, 2.8, 0.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.72, 1.4, -2.8)
+material = ExtResource("2")
+
+[node name="DoorFrameR" type="CSGBox3D" parent="HouseFrontDoor"]
+size = Vector3(0.2, 2.8, 0.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.72, 1.4, -2.8)
+material = ExtResource("2")
+
+[node name="DoorFrameTop" type="CSGBox3D" parent="HouseFrontDoor"]
+size = Vector3(1.64, 0.2, 0.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, -2.8)
+material = ExtResource("2")
+
+[node name="DoorPanel" type="CSGBox3D" parent="HouseFrontDoor"]
+size = Vector3(1.22, 2.76, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38, -2.78)
+material = ExtResource("2")
+
+[node name="DoorKnob" type="CSGSphere3D" parent="HouseFrontDoor"]
+radius = 0.065
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 1.35, -2.74)
+material = ExtResource("5")
+
+; ── Exterior lamp by door ──────────────────────────────────────────────────
+[node name="PorchLamp" type="CSGCombiner3D" parent="."]
+
+[node name="LampPost" type="CSGCylinder3D" parent="PorchLamp"]
+radius = 0.04
+height = 1.6
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0.8, -2.6)
+material = ExtResource("5")
+
+[node name="LampHead" type="CSGBox3D" parent="PorchLamp"]
+size = Vector3(0.22, 0.22, 0.22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 1.71, -2.6)
+material = ExtResource("4")
+
+[node name="LampGlobe" type="CSGSphere3D" parent="PorchLamp"]
+radius = 0.08
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 1.68, -2.6)
+material = ExtResource("6")
+
+; ── Lighting ─────────────────────────────────────────────────────────────
+; Moonlight spill onto platform (exterior — no overhead enclosure)
+[node name="MoonSpill" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 0, 0)
+light_color = Color(0.62, 0.68, 0.92, 1)
+light_energy = 0.35
+
+; Warm window spill from house interior (bleeds out under/around door)
+[node name="WindowSpill" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -2.0)
+light_color = Color(0.95, 0.78, 0.52, 1)
+light_energy = 0.6
+omni_range = 4.5
+
+; Porch lamp warm glow
+[node name="PorchLampLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 1.68, -2.6)
+light_color = Color(0.98, 0.82, 0.52, 1)
+light_energy = 0.8
+omni_range = 3.5

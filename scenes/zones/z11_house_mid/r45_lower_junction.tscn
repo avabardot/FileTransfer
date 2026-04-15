@@ -1,0 +1,127 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/interior_wood.tres" id="1"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/furniture_wood.tres" id="2"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/brass_hardware.tres" id="3"]
+[ext_resource type="ShaderMaterial" path="res://materials/emissive/emissive_warm.tres" id="4"]
+[ext_resource type="ShaderMaterial" path="res://materials/emissive/emissive_cool.tres" id="5"]
+
+; R45 Lower Junction — 3m x 3m, ceiling 3m
+; "Back-of-house junction linking library passage, laboratory, and mines."
+; "Dual-door basement-like landing with route choice."
+; West (Z+): from Secret Bookcase Passage (R44). North (Z-): to Laboratory (R46).
+; East: service door stub toward mine connection. "Make connections unmistakable."
+
+[node name="R45LowerJunction" type="Node3D"]
+
+; ── Structure ────────────────────────────────────────────────────────────────
+[node name="Structure" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="Structure"]
+size = Vector3(3.0, 0.3, 3.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+material = ExtResource("1")
+
+[node name="Ceiling" type="CSGBox3D" parent="Structure"]
+size = Vector3(3.0, 0.22, 3.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.11, 0)
+material = ExtResource("1")
+
+; North wall — door to Laboratory
+[node name="WallNorth" type="CSGBox3D" parent="Structure"]
+size = Vector3(3.0, 3.0, 0.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -1.625)
+material = ExtResource("1")
+
+[node name="DoorNorth" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(1.1, 2.35, 0.45)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.175, -1.625)
+
+; South wall — door from Secret Passage
+[node name="WallSouth" type="CSGBox3D" parent="Structure"]
+size = Vector3(3.0, 3.0, 0.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 1.625)
+material = ExtResource("2")
+
+[node name="DoorSouth" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(1.0, 2.35, 0.45)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.175, 1.625)
+
+; East wall — service door stub to mine connection (not fully open; just a door shape)
+[node name="WallEast" type="CSGBox3D" parent="Structure"]
+size = Vector3(0.25, 3.0, 3.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.625, 1.5, 0)
+material = ExtResource("1")
+
+[node name="ServiceDoorEast" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(0.45, 2.0, 0.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.625, 1.0, 0.4)
+
+; West wall — solid utility wall
+[node name="WallWest" type="CSGBox3D" parent="Structure"]
+size = Vector3(0.25, 3.0, 3.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.625, 1.5, 0)
+material = ExtResource("1")
+
+; ── Props ─────────────────────────────────────────────────────────────────
+; Directional floor arrows (simple recessed strips pointing to each exit)
+[node name="ArrowToLab" type="CSGBox3D" parent="."]
+size = Vector3(0.3, 0.015, 0.7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.008, -0.6)
+material = ExtResource("5")
+
+[node name="ArrowToMine" type="CSGBox3D" parent="."]
+size = Vector3(0.7, 0.015, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.008, 0.3)
+material = ExtResource("4")
+
+; Service door frame (east) — slightly odd, built-into-mine aesthetic
+[node name="ServiceFrame" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="SF_Left" type="CSGBox3D" parent="ServiceFrame"]
+size = Vector3(0.08, 2.1, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.58, 1.05, -0.02)
+material = ExtResource("2")
+
+[node name="SF_Right" type="CSGBox3D" parent="ServiceFrame"]
+size = Vector3(0.08, 2.1, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.58, 1.05, 0.88)
+material = ExtResource("2")
+
+[node name="SF_Top" type="CSGBox3D" parent="ServiceFrame"]
+size = Vector3(0.08, 0.1, 1.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.58, 2.1, 0.43)
+material = ExtResource("2")
+
+; Heavy brass handle on service door
+[node name="ServiceHandle" type="CSGBox3D" parent="."]
+size = Vector3(0.04, 0.28, 0.04)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.57, 1.1, 0.18)
+material = ExtResource("3")
+
+; Small ceiling pipe running north-south (utility feel)
+[node name="CeilingPipe" type="CSGCylinder3D" parent="."]
+radius = 0.038
+height = 2.6
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.6, 2.7, 0)
+material = ExtResource("3")
+
+; ── Lighting — functional, not decorative ──────────────────────────────────
+; Warm overhead — junction should be readable not atmospheric
+[node name="JunctionOverhead" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7, 0)
+light_color = Color(0.88, 0.8, 0.65, 1)
+light_energy = 0.85
+omni_range = 5.5
+
+; Hint of mine — faint cool glow bleeding from east door
+[node name="MineLeak" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.0, 0.4)
+light_color = Color(0.4, 0.65, 0.5, 1)
+light_energy = 0.28
+omni_range = 2.0

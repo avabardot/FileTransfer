@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/zones/z03_central_hub/r07_central_crossroads.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z03_central_hub/r08_house_lift_base.tscn" id="2"]
+
+; Z03 Central Hub assembly — ground-level outdoor area
+; R07: The main crossroads clearing (20m x 20m), origin point of the world
+; R08: House Lift Base (8m x 8m), north of crossroads, at base of the giant tree
+;
+; World layout:
+;   R07 sits at origin (0, 0, 0)
+;   R08 is placed ~14m north (negative Z) and slightly elevated — the path
+;       leading north from the crossroads connects directly to the lift base.
+;   The giant tree trunk in R08 (z offset -5.5) aligns with the north edge
+;       of R07, making it visible from the crossroads centre.
+
+[node name="CentralHub" type="Node3D"]
+
+; R07 Central Crossroads — world origin
+[node name="R07CentralCrossroads" parent="." instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+; R08 House Lift Base — north of crossroads
+; Placed 14m north (Z = -14) so the south path of R08 meets the north path of R07.
+; Y = 0 — same ground plane (tree trunk rises from here up into the sky).
+[node name="R08HouseLiftBase" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14)

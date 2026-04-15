@@ -1,0 +1,211 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/interior_wood.tres" id="1"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/rug_carpet.tres" id="2"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/furniture_wood.tres" id="3"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/brass_hardware.tres" id="4"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/furniture_fabric.tres" id="5"]
+[ext_resource type="ShaderMaterial" path="res://materials/emissive/emissive_warm.tres" id="6"]
+
+; R37 Entry Hall — 6m x 5m x 3.5m
+; First node linking kitchen (east), living room (west), stairs (north), front door (south).
+; Coordinate origin at floor centre. Y+ is up. South wall = +Z, North = -Z, East = +X, West = -X.
+
+[node name="R37EntryHall" type="Node3D"]
+
+; ── Structure (shell with doorway cutouts) ────────────────────────────────────
+[node name="Structure" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="Structure"]
+size = Vector3(6.0, 0.3, 5.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+material = ExtResource("1")
+
+[node name="Ceiling" type="CSGBox3D" parent="Structure"]
+size = Vector3(6.0, 0.3, 5.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.65, 0)
+material = ExtResource("1")
+
+; South wall — front-door wall, centred cutout 1.1 w x 2.2 h
+[node name="WallSouth" type="CSGBox3D" parent="Structure"]
+size = Vector3(6.0, 3.5, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 2.5)
+material = ExtResource("1")
+
+[node name="DoorCutSouth" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(1.1, 2.2, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 2.5)
+
+; North wall — passage to stair landing, centred cutout 1.4 w x 2.4 h
+[node name="WallNorth" type="CSGBox3D" parent="Structure"]
+size = Vector3(6.0, 3.5, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -2.5)
+material = ExtResource("1")
+
+[node name="DoorCutNorth" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(1.4, 2.4, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -2.5)
+
+; East wall — opening to kitchen, offset toward south half so hook area stays clear
+[node name="WallEast" type="CSGBox3D" parent="Structure"]
+size = Vector3(0.3, 3.5, 5.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.15, 1.75, 0)
+material = ExtResource("1")
+
+[node name="DoorCutEast" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(0.5, 2.4, 1.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.15, 1.2, 0.4)
+
+; West wall — opening to living room
+[node name="WallWest" type="CSGBox3D" parent="Structure"]
+size = Vector3(0.3, 3.5, 5.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.15, 1.75, 0)
+material = ExtResource("1")
+
+[node name="DoorCutWest" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(0.5, 2.4, 1.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.15, 1.2, 0.4)
+
+; ── Front door frame ──────────────────────────────────────────────────────────
+; Positioned flush with south wall outer face (z = 2.5)
+[node name="DoorFrame" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5)
+
+[node name="FrameLeft" type="CSGBox3D" parent="DoorFrame"]
+size = Vector3(0.12, 2.3, 0.16)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.61, 1.15, 0)
+material = ExtResource("3")
+
+[node name="FrameRight" type="CSGBox3D" parent="DoorFrame"]
+size = Vector3(0.12, 2.3, 0.16)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.61, 1.15, 0)
+material = ExtResource("3")
+
+[node name="FrameTop" type="CSGBox3D" parent="DoorFrame"]
+size = Vector3(1.34, 0.13, 0.16)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.36, 0)
+material = ExtResource("3")
+
+; Brass door knob — interior side
+[node name="DoorKnob" type="CSGSphere3D" parent="DoorFrame"]
+radius = 0.055
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.44, 1.05, -0.12)
+material = ExtResource("4")
+
+; ── Welcome rug — centred just inside the front door ─────────────────────────
+[node name="WelcomeRug" type="CSGBox3D" parent="."]
+size = Vector3(2.0, 0.04, 1.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 1.8)
+material = ExtResource("2")
+
+; ── Coat hooks — three brass pegs on a wood backplate, east side of south wall
+[node name="CoatHooks" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="HookBackplate" type="CSGBox3D" parent="CoatHooks"]
+size = Vector3(1.3, 0.38, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1, 2.0, 2.38)
+material = ExtResource("3")
+
+; Pegs point outward from the wall (rotated so cylinder axis = Z)
+[node name="HookPeg1" type="CSGCylinder3D" parent="CoatHooks"]
+radius = 0.028
+height = 0.22
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 1.55, 2.04, 2.3)
+material = ExtResource("4")
+
+[node name="HookPeg2" type="CSGCylinder3D" parent="CoatHooks"]
+radius = 0.028
+height = 0.22
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 2.1, 2.04, 2.3)
+material = ExtResource("4")
+
+[node name="HookPeg3" type="CSGCylinder3D" parent="CoatHooks"]
+radius = 0.028
+height = 0.22
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 2.65, 2.04, 2.3)
+material = ExtResource("4")
+
+; ── Entry table — west side of hall, visible from front door ──────────────────
+[node name="EntryTable" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 1.6)
+
+[node name="TableTop" type="CSGBox3D" parent="EntryTable"]
+size = Vector3(0.82, 0.06, 0.46)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
+material = ExtResource("3")
+
+[node name="TableLegFL" type="CSGBox3D" parent="EntryTable"]
+size = Vector3(0.06, 0.82, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36, 0.41, 0.19)
+material = ExtResource("3")
+
+[node name="TableLegFR" type="CSGBox3D" parent="EntryTable"]
+size = Vector3(0.06, 0.82, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36, 0.41, 0.19)
+material = ExtResource("3")
+
+[node name="TableLegBL" type="CSGBox3D" parent="EntryTable"]
+size = Vector3(0.06, 0.82, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36, 0.41, -0.19)
+material = ExtResource("3")
+
+[node name="TableLegBR" type="CSGBox3D" parent="EntryTable"]
+size = Vector3(0.06, 0.82, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36, 0.41, -0.19)
+material = ExtResource("3")
+
+; Thin runner rug under entry table
+[node name="TableRunner" type="CSGBox3D" parent="."]
+size = Vector3(0.9, 0.03, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0.015, 1.6)
+material = ExtResource("2")
+
+; ── Brass lamp on entry table (anchor object — readable from doorway) ─────────
+[node name="EntryLamp" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 1.6)
+
+[node name="LampBase" type="CSGCylinder3D" parent="EntryLamp"]
+radius = 0.09
+height = 0.07
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.885, 0)
+material = ExtResource("4")
+
+[node name="LampStem" type="CSGCylinder3D" parent="EntryLamp"]
+radius = 0.022
+height = 0.44
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.11, 0)
+material = ExtResource("4")
+
+; Shade: wide truncated cone approximated by a slightly tapered cylinder
+[node name="LampShade" type="CSGCylinder3D" parent="EntryLamp"]
+radius = 0.19
+height = 0.22
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.44, 0)
+material = ExtResource("5")
+
+; Inner glow bulb
+[node name="LampGlow" type="CSGSphere3D" parent="EntryLamp"]
+radius = 0.065
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+material = ExtResource("6")
+
+; ── Lighting ──────────────────────────────────────────────────────────────────
+[node name="OverheadLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+light_color = Color(0.95, 0.8, 0.6, 1)
+light_energy = 1.0
+omni_range = 7.0
+
+; Spot shining down onto the entry table lamp — reinforces the anchor read
+[node name="LampAccent" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -1, 0, 0, 0, -1, -1.8, 2.6, 1.6)
+light_color = Color(0.98, 0.85, 0.62, 1)
+light_energy = 0.8
+spot_range = 3.5
+spot_angle = 32.0

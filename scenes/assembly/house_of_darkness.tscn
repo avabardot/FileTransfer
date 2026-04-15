@@ -1,0 +1,122 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/zones/z10_house_lower/r36_house_exterior_lift_top.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z10_house_lower/r37_entry_hall.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z10_house_lower/r38_kitchen.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z10_house_lower/r39_living_room.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z10_house_lower/r40_stair_landing.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z11_house_mid/r41_weird_hallway.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z11_house_mid/r42_music_room.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z11_house_mid/r43_library.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z11_house_mid/r44_secret_bookcase_passage.tscn" id="9"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z11_house_mid/r45_lower_junction.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z11_house_mid/r46_laboratory.tscn" id="11"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z12_house_upper/r47_bedroom_landing.tscn" id="12"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z12_house_upper/r48_darknesss_bedroom.tscn" id="13"]
+[ext_resource type="PackedScene" path="res://scenes/zones/z12_house_upper/r49_darknesss_closet.tscn" id="14"]
+
+; House of Darkness — full vertical assembly of all 13 interior/platform rooms
+;
+; Coordinate convention:
+;   +X = east    -X = west
+;   +Y = up      -Y = down
+;   +Z = south   -Z = north
+;
+; Vertical stacking (Y):
+;   Y =  0  →  Z10 Lower Domestic (entry level — top of pulley lift)
+;   Y =  4  →  Z11 Mid Stack      (one floor up via Doors of Knowledge stairs)
+;   Y =  8  →  Z12 Upper Private  (private rooms above mid stack)
+;
+; Horizontal layout mirrors the Pajama Sam source geography:
+;   Entry Hall (R37) is the central hub at house level.
+;   Kitchen (R38) branches west, Living Room (R39) branches east.
+;   Stair Landing (R40) is north of Entry Hall — stairs ascend to Z11.
+;   The weird rooms (Z11) cluster around the stair head.
+;   Upper private rooms (Z12) sit above Z11 north.
+;
+; NOTE: These positions are designed for assembly and first-pass traversal.
+;   Fine-tune doorway seam alignment in the Godot editor after loading.
+
+[node name="HouseOfDarkness" type="Node3D"]
+
+; ── Z10 Lower Domestic (Y = 0) ────────────────────────────────────────────────
+
+; R36 House Exterior Lift Top — platform where the pulley basket arrives.
+; Placed at the south face of the house; the front door faces north into R37.
+; 6m x 6m platform, front door at local Z = -2.8 → world Z ≈ -2.8.
+[node name="R36HouseExteriorLiftTop" parent="." instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+; R37 Entry Hall — first interior room, entered from R36 front door.
+; R36 front door is at world Z ≈ 0.2; R37 south wall sits at Z = 0.
+; 6m x 5m room extends north to Z = -5.
+[node name="R37EntryHall" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+; R38 Kitchen — west wing off Entry Hall.
+; Entry Hall's west doorway is at local X ≈ -3; Kitchen east wall meets it.
+; 5m x 5m room, center at X = -7.5.
+[node name="R38Kitchen" parent="." instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, -2.5)
+
+; R39 Living Room — east wing off Entry Hall.
+; Mirrored from kitchen: center at X = +7.5.
+[node name="R39LivingRoom" parent="." instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, -2.5)
+
+; R40 Stair Landing / Doors of Knowledge — north end of Entry Hall.
+; R37 north doorway is at Z ≈ -5; R40 south wall meets it.
+; 4m x 4m room, center at Z = -7, contains stairs up to Z11.
+[node name="R40StairLanding" parent="." instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7)
+
+; ── Z11 Mid Stack (Y = 4) ─────────────────────────────────────────────────────
+
+; R41 Weird Hallway — narrow surreal corridor rising from Stair Landing.
+; Stair head in R40 exits at approximately Z = -9 at house level.
+; R41 is a 3m x 8m hallway aligned north-south; placed at same XZ footprint.
+[node name="R41WeirdHallway" parent="." instance=ExtResource("6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -10)
+
+; R42 Music Room — theatrical room west of Weird Hallway.
+; Accessed via west doorway of R41; 5m x 5m x 5m tall.
+[node name="R42MusicRoom" parent="." instance=ExtResource("7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, -12)
+
+; R43 Library — north end of Weird Hallway, 5m x 6m tall room.
+; The secret bookcase on its west wall connects to R44.
+[node name="R43Library" parent="." instance=ExtResource("8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -18)
+
+; R44 Secret Bookcase Passage — narrow connector west of Library.
+; 1.5m x 4m, very compressed. Enters from Library west wall, exits into R45.
+[node name="R44SecretBookcasePassage" parent="." instance=ExtResource("9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 4, -18)
+
+; R45 Lower Junction — compact service hub, 3m x 3m.
+; North connects to Lab (R46), east service door leads toward mines,
+; south leads back from Secret Passage (R44).
+[node name="R45LowerJunction" parent="." instance=ExtResource("10")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 4, -13)
+
+; R46 Laboratory — 5m x 5m, north of Weird Hallway east branch.
+; Potion rack anchor on north wall; dumbwaiter shaft connects down to R38 kitchen.
+[node name="R46Laboratory" parent="." instance=ExtResource("11")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 4, -14)
+
+; ── Z12 Upper Private (Y = 8) ─────────────────────────────────────────────────
+
+; R47 Bedroom Landing — narrow 2m x 3m threshold at top of upper stairs.
+; Sits above Library/Lab zone, transitioning into private rooms.
+[node name="R47BedroomLanding" parent="." instance=ExtResource("12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, -18)
+
+; R48 Darkness's Bedroom — 5m x 5m, gentle intimate room.
+; North of landing; closet door on east wall connects to R49.
+[node name="R48DarknesssBedroom" parent="." instance=ExtResource("13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, -23)
+
+; R49 Darkness's Closet — INTENTIONALLY TINY, 2m x 2m.
+; East of Bedroom; the intimate compression is the point.
+[node name="R49DarknessCloset" parent="." instance=ExtResource("14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 8, -23)

@@ -1,0 +1,255 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/interior_wood.tres" id="1"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/furniture_wood.tres" id="2"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/brass_hardware.tres" id="3"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/organ_pipe.tres" id="4"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/curtain.tres" id="5"]
+[ext_resource type="ShaderMaterial" path="res://materials/emissive/emissive_cool.tres" id="6"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/rug_carpet.tres" id="7"]
+
+; R42 Music Room — 5m x 5m, ceiling 5m (tall for organ wall)
+; Blue-toned theatrical room. Anchor: pipe organ on north wall, readable from entry.
+; East door from Weird Hallway (R41). West optional passage.
+; "Give it a clear frontal composition so the organ wall reads immediately."
+
+[node name="R42MusicRoom" type="Node3D"]
+
+; ── Structure ────────────────────────────────────────────────────────────────
+[node name="Structure" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="Structure"]
+size = Vector3(5.0, 0.3, 5.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+material = ExtResource("1")
+
+[node name="Ceiling" type="CSGBox3D" parent="Structure"]
+size = Vector3(5.0, 0.3, 5.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.15, 0)
+material = ExtResource("1")
+
+; North wall — organ wall, solid (no doors)
+[node name="WallNorth" type="CSGBox3D" parent="Structure"]
+size = Vector3(5.0, 5.0, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -2.65)
+material = ExtResource("1")
+
+; South wall — entry from Weird Hallway east door
+[node name="WallSouth" type="CSGBox3D" parent="Structure"]
+size = Vector3(5.0, 5.0, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 2.65)
+material = ExtResource("1")
+
+[node name="DoorSouth" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(1.3, 2.4, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 2.65)
+
+; East wall — solid
+[node name="WallEast" type="CSGBox3D" parent="Structure"]
+size = Vector3(0.3, 5.0, 5.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.65, 2.5, 0)
+material = ExtResource("1")
+
+; West wall — solid
+[node name="WallWest" type="CSGBox3D" parent="Structure"]
+size = Vector3(0.3, 5.0, 5.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.65, 2.5, 0)
+material = ExtResource("1")
+
+; ── Pipe Organ (anchor — north wall, full-height composition) ────────────
+[node name="PipeOrgan" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+; Main cabinet body
+[node name="OrganBody" type="CSGBox3D" parent="PipeOrgan"]
+size = Vector3(3.2, 1.8, 0.55)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -2.38)
+material = ExtResource("2")
+
+; Keyboard desk
+[node name="OrganKeys" type="CSGBox3D" parent="PipeOrgan"]
+size = Vector3(2.4, 0.12, 0.38)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04, -2.16)
+material = ExtResource("2")
+
+; Stool in front of organ
+[node name="OrganStool" type="CSGCombiner3D" parent="PipeOrgan"]
+
+[node name="StoolSeat" type="CSGBox3D" parent="PipeOrgan/OrganStool"]
+size = Vector3(0.6, 0.07, 0.38)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -1.7)
+material = ExtResource("2")
+
+[node name="StoolLegL" type="CSGBox3D" parent="PipeOrgan/OrganStool"]
+size = Vector3(0.06, 0.62, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24, 0.31, -1.7)
+material = ExtResource("2")
+
+[node name="StoolLegR" type="CSGBox3D" parent="PipeOrgan/OrganStool"]
+size = Vector3(0.06, 0.62, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, 0.31, -1.7)
+material = ExtResource("2")
+
+; Pipe cluster — large centre pipes (tall, reaching ceiling)
+[node name="PipeC1" type="CSGCylinder3D" parent="PipeOrgan"]
+radius = 0.055
+height = 3.8
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 3.7, -2.42)
+material = ExtResource("4")
+
+[node name="PipeC2" type="CSGCylinder3D" parent="PipeOrgan"]
+radius = 0.065
+height = 4.2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, -2.42)
+material = ExtResource("4")
+
+[node name="PipeC3" type="CSGCylinder3D" parent="PipeOrgan"]
+radius = 0.055
+height = 3.8
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 3.7, -2.42)
+material = ExtResource("4")
+
+; Medium flanking pipes (left cluster)
+[node name="PipeML1" type="CSGCylinder3D" parent="PipeOrgan"]
+radius = 0.04
+height = 2.8
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 3.2, -2.42)
+material = ExtResource("4")
+
+[node name="PipeML2" type="CSGCylinder3D" parent="PipeOrgan"]
+radius = 0.035
+height = 2.4
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 3.0, -2.42)
+material = ExtResource("4")
+
+[node name="PipeML3" type="CSGCylinder3D" parent="PipeOrgan"]
+radius = 0.03
+height = 2.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.28, 2.8, -2.42)
+material = ExtResource("4")
+
+; Medium flanking pipes (right cluster)
+[node name="PipeMR1" type="CSGCylinder3D" parent="PipeOrgan"]
+radius = 0.04
+height = 2.8
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 3.2, -2.42)
+material = ExtResource("4")
+
+[node name="PipeMR2" type="CSGCylinder3D" parent="PipeOrgan"]
+radius = 0.035
+height = 2.4
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 3.0, -2.42)
+material = ExtResource("4")
+
+[node name="PipeMR3" type="CSGCylinder3D" parent="PipeOrgan"]
+radius = 0.03
+height = 2.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.28, 2.8, -2.42)
+material = ExtResource("4")
+
+; Decorative pipe cross-brace
+[node name="PipeBrace" type="CSGBox3D" parent="PipeOrgan"]
+size = Vector3(2.9, 0.06, 0.08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, -2.42)
+material = ExtResource("3")
+
+; ── Marble bust on pedestal (west side, counterpoint to organ) ─────────────
+[node name="BustPedestal" type="CSGBox3D" parent="."]
+size = Vector3(0.46, 0.9, 0.46)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0.45, -1.6)
+material = ExtResource("2")
+
+[node name="BustNeck" type="CSGCylinder3D" parent="."]
+radius = 0.1
+height = 0.22
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 1.01, -1.6)
+material = ExtResource("3")
+
+[node name="BustHead" type="CSGSphere3D" parent="."]
+radius = 0.2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 1.32, -1.6)
+material = ExtResource("3")
+
+; ── Chandelier (theatrical centrepiece overhead) ───────────────────────────
+[node name="Chandelier" type="CSGCombiner3D" parent="."]
+
+[node name="ChanChain" type="CSGCylinder3D" parent="Chandelier"]
+radius = 0.025
+height = 1.2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7, 0)
+material = ExtResource("3")
+
+[node name="ChanRing" type="CSGTorus3D" parent="Chandelier"]
+inner_radius = 0.55
+outer_radius = 0.72
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.0, 0)
+material = ExtResource("3")
+
+[node name="ChanGlobe1" type="CSGSphere3D" parent="Chandelier"]
+radius = 0.07
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.63, 3.98, 0)
+material = ExtResource("6")
+
+[node name="ChanGlobe2" type="CSGSphere3D" parent="Chandelier"]
+radius = 0.07
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.63, 3.98, 0)
+material = ExtResource("6")
+
+[node name="ChanGlobe3" type="CSGSphere3D" parent="Chandelier"]
+radius = 0.07
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.98, 0.63)
+material = ExtResource("6")
+
+[node name="ChanGlobe4" type="CSGSphere3D" parent="Chandelier"]
+radius = 0.07
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.98, -0.63)
+material = ExtResource("6")
+
+; ── Curtains on east wall (theatrical drapery) ─────────────────────────────
+[node name="CurtainEastL" type="CSGBox3D" parent="."]
+size = Vector3(0.12, 4.0, 0.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.1, -0.8)
+material = ExtResource("5")
+
+[node name="CurtainEastR" type="CSGBox3D" parent="."]
+size = Vector3(0.12, 4.0, 0.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.1, 1.2)
+material = ExtResource("5")
+
+; ── Room carpet ────────────────────────────────────────────────────────────
+[node name="RoomCarpet" type="CSGBox3D" parent="."]
+size = Vector3(3.8, 0.03, 3.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.015, -0.2)
+material = ExtResource("7")
+
+; ── Lighting (theatrical blue tone per biome spec) ─────────────────────────
+; Key spot on organ — the whole room frames it
+[node name="OrganSpot" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.906, 0.423, 0, -0.423, -0.906, 0, 4.8, 0.5)
+light_color = Color(0.55, 0.6, 0.92, 1)
+light_energy = 2.0
+spot_range = 7.0
+spot_angle = 38.0
+
+; Chandelier fill — cool blue ambient
+[node name="ChanLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, 0)
+light_color = Color(0.45, 0.52, 0.88, 1)
+light_energy = 0.7
+omni_range = 8.0
+
+; Emissive globe glow helper (makes chandelier globes look lit)
+[node name="GlobeGlow" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.0, 0)
+light_color = Color(0.6, 0.65, 1.0, 1)
+light_energy = 0.5
+omni_range = 3.0
+
+; Warm fill near bust — slight contrast vs cold organ side
+[node name="BustFill" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.2, -1.4)
+light_color = Color(0.72, 0.62, 0.9, 1)
+light_energy = 0.4
+omni_range = 2.5

@@ -1,0 +1,206 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/interior_wood.tres" id="1"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/rug_carpet.tres" id="2"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/furniture_wood.tres" id="3"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/brass_hardware.tres" id="4"]
+[ext_resource type="ShaderMaterial" path="res://materials/biome_b09/curtain.tres" id="5"]
+[ext_resource type="ShaderMaterial" path="res://materials/emissive/emissive_warm.tres" id="6"]
+[ext_resource type="ShaderMaterial" path="res://materials/emissive/emissive_cool.tres" id="7"]
+
+; R40 Stair Landing / Doors of Knowledge — 4m x 4m, ceiling 4m
+; Critical junction: player must understand both the forward path (Doors of Knowledge, Z11)
+; and the upward stair route. South connects to Entry Hall. North = Doors of Knowledge.
+; A staircase rises along the east wall. Wink & Blink double-door frame is the anchor.
+
+[node name="R40StairLanding" type="Node3D"]
+
+; ── Structure ────────────────────────────────────────────────────────────────
+[node name="Structure" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="Structure"]
+size = Vector3(4.0, 0.3, 4.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+material = ExtResource("1")
+
+[node name="Ceiling" type="CSGBox3D" parent="Structure"]
+size = Vector3(4.0, 0.3, 4.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.15, 0)
+material = ExtResource("1")
+
+; South wall — opening from Entry Hall
+[node name="WallSouth" type="CSGBox3D" parent="Structure"]
+size = Vector3(4.0, 4.0, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 2.15)
+material = ExtResource("1")
+
+[node name="DoorSouth" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(1.4, 2.4, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 1.2, 2.15)
+
+; North wall — the Doors of Knowledge (prominent double door threshold to Z11)
+[node name="WallNorth" type="CSGBox3D" parent="Structure"]
+size = Vector3(4.0, 4.0, 0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, -2.15)
+material = ExtResource("1")
+
+; Double door cutout — wide theatrical opening
+[node name="DoorNorthL" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(1.1, 2.8, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 1.4, -2.15)
+
+[node name="DoorNorthR" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(1.1, 2.8, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, 1.4, -2.15)
+
+; West wall — solid
+[node name="WallWest" type="CSGBox3D" parent="Structure"]
+size = Vector3(0.3, 4.0, 4.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.15, 2.0, 0)
+material = ExtResource("1")
+
+; East wall — staircase rises along this wall; leave lower portion open for stair entry
+[node name="WallEast" type="CSGBox3D" parent="Structure"]
+size = Vector3(0.3, 4.0, 4.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.15, 2.0, 0)
+material = ExtResource("1")
+
+; Stair opening cut in east wall (player walks up staircase to upper floors)
+[node name="StairCutEast" type="CSGBox3D" parent="Structure"]
+operation = 2
+size = Vector3(0.5, 2.6, 2.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.15, 1.3, 0.8)
+
+; ── Staircase (5 steps rising east along north side of landing) ───────────
+[node name="Staircase" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Step1" type="CSGBox3D" parent="Staircase"]
+size = Vector3(0.9, 0.22, 0.36)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 0.11, 1.7)
+material = ExtResource("1")
+
+[node name="Step2" type="CSGBox3D" parent="Staircase"]
+size = Vector3(0.9, 0.22, 0.36)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 0.33, 1.34)
+material = ExtResource("1")
+
+[node name="Step3" type="CSGBox3D" parent="Staircase"]
+size = Vector3(0.9, 0.22, 0.36)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 0.55, 0.98)
+material = ExtResource("1")
+
+[node name="Step4" type="CSGBox3D" parent="Staircase"]
+size = Vector3(0.9, 0.22, 0.36)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 0.77, 0.62)
+material = ExtResource("1")
+
+[node name="Step5" type="CSGBox3D" parent="Staircase"]
+size = Vector3(0.9, 0.22, 0.36)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 0.99, 0.26)
+material = ExtResource("1")
+
+; Stair railing post
+[node name="RailPost" type="CSGBox3D" parent="Staircase"]
+size = Vector3(0.06, 1.0, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16, 1.5, 1.0)
+material = ExtResource("4")
+
+[node name="RailBar" type="CSGBox3D" parent="Staircase"]
+size = Vector3(0.04, 0.04, 1.6)
+transform = Transform3D(1, 0, 0, 0, 0.9806, -0.1961, 0, 0.1961, 0.9806, 1.16, 1.45, 0.98)
+material = ExtResource("4")
+
+; ── Doors of Knowledge frame (anchor — game-show theatrical double doors) ──
+[node name="DoKFrame" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+; Ornate surround — wide architrave
+[node name="ArchLeft" type="CSGBox3D" parent="DoKFrame"]
+size = Vector3(0.22, 3.1, 0.22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.32, 1.55, -2.05)
+material = ExtResource("3")
+
+[node name="ArchRight" type="CSGBox3D" parent="DoKFrame"]
+size = Vector3(0.22, 3.1, 0.22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.32, 1.55, -2.05)
+material = ExtResource("3")
+
+[node name="ArchTop" type="CSGBox3D" parent="DoKFrame"]
+size = Vector3(2.94, 0.22, 0.22)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.11, -2.05)
+material = ExtResource("3")
+
+; Decorative pediment crown above arch
+[node name="Pediment" type="CSGBox3D" parent="DoKFrame"]
+size = Vector3(2.94, 0.14, 0.18)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, -2.05)
+material = ExtResource("4")
+
+; Left door panel (closed)
+[node name="DoorPanelL" type="CSGBox3D" parent="DoKFrame"]
+size = Vector3(0.98, 2.78, 0.08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, 1.39, -2.1)
+material = ExtResource("3")
+
+; Right door panel (closed)
+[node name="DoorPanelR" type="CSGBox3D" parent="DoKFrame"]
+size = Vector3(0.98, 2.78, 0.08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 1.39, -2.1)
+material = ExtResource("3")
+
+; Brass knobs on both panels
+[node name="KnobL" type="CSGSphere3D" parent="DoKFrame"]
+radius = 0.06
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08, 1.3, -2.07)
+material = ExtResource("4")
+
+[node name="KnobR" type="CSGSphere3D" parent="DoKFrame"]
+radius = 0.06
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08, 1.3, -2.07)
+material = ExtResource("4")
+
+; Faint emissive glow strip along top of frame (game-show indicator)
+[node name="ShowGlow" type="CSGBox3D" parent="DoKFrame"]
+size = Vector3(2.8, 0.06, 0.06)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.06, -2.04)
+material = ExtResource("7")
+
+; ── Landing rug (directional — pulls eye toward Doors of Knowledge) ────────
+[node name="LandingRug" type="CSGBox3D" parent="."]
+size = Vector3(2.0, 0.03, 3.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.015, -0.2)
+material = ExtResource("2")
+
+; Fringe strip at rug edge toward doors
+[node name="RugFringe" type="CSGBox3D" parent="."]
+size = Vector3(2.0, 0.02, 0.14)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.01, -1.73)
+material = ExtResource("5")
+
+; ── Lighting ─────────────────────────────────────────────────────────────────
+; Overhead warm — domestic warmth before the surreal zone
+[node name="CeilingLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 3.7, 0.5)
+light_color = Color(0.95, 0.82, 0.62, 1)
+light_energy = 0.9
+omni_range = 6.5
+
+; Spotlight aimed at the Doors of Knowledge — theatrical emphasis
+[node name="DoKSpot" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.906, 0.423, 0, -0.423, -0.906, 0, 3.8, 0.8)
+light_color = Color(0.82, 0.75, 0.95, 1)
+light_energy = 1.2
+spot_range = 5.0
+spot_angle = 28.0
+
+; Soft fill near staircase
+[node name="StairFill" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 2.0, 0.8)
+light_color = Color(0.88, 0.78, 0.6, 1)
+light_energy = 0.45
+omni_range = 3.5
